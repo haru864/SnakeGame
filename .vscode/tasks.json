@@ -1,0 +1,49 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C++ build active file into bin directory",
+			"command": "/usr/bin/g++",
+			"args": [
+				"${file}",
+				"-o",
+				"${workspaceFolder}/bin/${fileBasenameNoExtension}",
+				"-g",
+				"-Wall",
+				"-lncurses"
+			],
+			"options": {
+                "cwd": "${fileDirname}"
+            }
+		},
+		{
+			"type": "cppbuild",
+			"label": "C++ build active file in current directory",
+			"command": "/usr/bin/g++",
+			"args": [
+				"${file}",
+				"-o",
+				"${fileBasenameNoExtension}",
+				"-g",
+				"-Wall",
+				"-lncurses"
+			],
+			"options": {
+                "cwd": "${fileDirname}"
+            }
+		},
+		{
+			"type": "shell",
+			"label": "change permission",
+			"command": "chmod",
+			"args": [
+				"774",
+				"${fileBasenameNoExtension}"
+			],
+			"options": {
+                "cwd": "${fileDirname}"
+            }
+		}
+	]
+}
