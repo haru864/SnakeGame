@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include "snake.h"
 
+extern int SCREEN_HEIGHT, SCREEN_WIDTH;
 extern int EATEN_FEED;
 extern time_t START_TIME, END_TIME;
 
@@ -13,10 +14,13 @@ Snake::Snake()
     body.push_back(coord);
 
     // set head, body icon
-    icon[DIR_LEFT] = "<";
-    icon[DIR_RIGHT] = ">";
-    icon[DIR_UP] = "^";
-    icon[DIR_DOWN] = "v";
+    icon["left"] = '<';
+    icon["right"] = '>';
+    icon["up"] = '^';
+    icon["down"] = 'v';
+
+    // set birth time
+    START_TIME = time(NULL);
 }
 
 Snake::~Snake() {}
@@ -35,7 +39,7 @@ void Snake::move()
     // head movement
     body.at(0).x += body.at(0).dir.x;
     body.at(0).y += body.at(0).dir.y;
-    if (snake::isBorder(body.at(0).x, body.at(0).y))
+    if (isBorder())
     {
         die();
     }
@@ -73,11 +77,23 @@ void Snake::move(char ch)
     }
 }
 
-void die()
+void Snake::die()
 {
+    // set dead time
+    END_TIME = time(NULL);
+
     endwin();
     fprintf(stdout, "feeds: %d\n", EATEN_FEED);
-    snake::showTime(END_TIME - START_TIME);
+    showSurvivalTime();
     fflush(stdout);
     exit(0);
+}
+
+bool Snake::isBorder()
+{
+    if (body.at(0).x < 0 || body.at(0).x > SCREEN_WIDTH)
+        return true;
+    if (body.at(0).y < 0 || body.at(0).y > SCREEN_HEIGHT)
+        return true;
+    return false;
 }

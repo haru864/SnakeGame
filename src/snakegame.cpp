@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <time.h>
+#include <unistd.h>
 #include "snake.h"
 
 int SCREEN_HEIGHT, SCREEN_WIDTH;
@@ -12,15 +13,31 @@ int main(int argc, char *argv[])
     initscr();
     EATEN_FEED = 0;
     getmaxyx(stdscr, SCREEN_HEIGHT, SCREEN_WIDTH);
+    SCREEN_HEIGHT = 15;
+    SCREEN_WIDTH = 15;
 
     Snake snake;
-    for (int y = 0; y < SCREEN_HEIGHT; y++)
+    while (true)
     {
-        for (int x = 0; x < SCREEN_WIDTH; x++)
+        for (int y = 0; y < SCREEN_HEIGHT; y++)
         {
-            mvprintw(x, y, snake.icon[snake.body.front().dir].c_str());
+            for (int x = 0; x < SCREEN_WIDTH; x++)
+            {
+                if ((y == snake.body.front().y) && (x == snake.body.front().x))
+                {
+                    mvprintw(y, x, &snake.icon["right"]);
+                }
+                else
+                {
+                    mvprintw(y, x, ".");
+                }
+            }
         }
+        refresh();
+        snake.move();
+        sleep(1);
     }
+    // getch();
 
     refresh();
 

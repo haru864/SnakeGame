@@ -1,11 +1,8 @@
 #ifndef _FEED_H_
 #define _FEED_H_
 
-typedef struct coordinate
-{
-    int x;
-    int y;
-} coordinate;
+#include "common.h"
+#include "snake.h"
 
 class Feed
 {
