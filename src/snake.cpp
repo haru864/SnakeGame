@@ -36,23 +36,20 @@ void Snake::eat(Feed feed)
 
 void Snake::move()
 {
-    // head movement
-    body.at(0).x += body.at(0).dir.x;
-    body.at(0).y += body.at(0).dir.y;
+    for (size_t i = 0; i < body.size(); i++)
+    {
+        body.at(i).x += body.at(i).dir.x;
+        body.at(i).y += body.at(i).dir.y;
+    }
+
     if (isBorder())
     {
         die();
     }
-
-    // body movement
 }
 
 void Snake::move(char ch)
 {
-    direction prevDir;
-    prevDir.x = body.at(0).x;
-    prevDir.y = body.at(0).y;
-
     switch (ch)
     {
     case 'w':
@@ -62,18 +59,16 @@ void Snake::move(char ch)
         body.at(0).dir = DIR_LEFT;
         break;
     case 's':
-        body.at(0).dir = DIR_RIGHT;
+        body.at(0).dir = DIR_DOWN;
         break;
     case 'd':
-        body.at(0).dir = DIR_DOWN;
+        body.at(0).dir = DIR_RIGHT;
+        break;
+    case '\n':
+        die();
         break;
     default:
         break;
-    }
-
-    if ((prevDir.x == body.at(0).x) && ((prevDir.y == body.at(0).y)))
-    {
-        die();
     }
 }
 
@@ -91,9 +86,9 @@ void Snake::die()
 
 bool Snake::isBorder()
 {
-    if (body.at(0).x < 0 || body.at(0).x > SCREEN_WIDTH)
+    if (body.front().x < 0 || body.front().x > SCREEN_WIDTH)
         return true;
-    if (body.at(0).y < 0 || body.at(0).y > SCREEN_HEIGHT)
+    if (body.front().y < 0 || body.front().y > SCREEN_HEIGHT)
         return true;
     return false;
 }

@@ -12,7 +12,7 @@ void showSurvivalTime()
     sec %= 3600;
     m = std::to_string(sec / 60);
     sec %= 60;
-    s = std::to_string(sec / 3600);
+    s = std::to_string(sec);
 
     if (h.length() < 2)
     {
