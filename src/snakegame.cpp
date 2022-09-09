@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
             {
                 if ((y == snake.body.front().y) && (x == snake.body.front().x))
                 {
-                    mvprintw(y, x, &snake.icon["right"]);
+                    mvprintw(y, x, &snake.currentHead);
                 }
                 else
                 {
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
         }
         refresh();
         snake.move();
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 
     waitInputWorker.join();
