@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ncurses.h>
+#include <vector>
 #include "snake.h"
 
 extern int SCREEN_HEIGHT, SCREEN_WIDTH;
@@ -24,15 +25,24 @@ Snake::Snake()
     START_TIME = time(NULL);
 }
 
-Snake::~Snake() {}
+Snake::~Snake()
+{
+}
 
 void Snake::eat(Feed feed)
 {
-    // direction dir = body.back().dir;
+    feed.birth();
+    grow();
+    EATEN_FEED++;
+}
 
-    // coordinate coord = {0, 0, dir};
-
-    // body.push_back(coord);
+void Snake::grow()
+{
+    coordinate tailEnd;
+    tailEnd.dir = body.back().dir;
+    tailEnd.x = body.back().x + body.back().dir.x * (-1);
+    tailEnd.y = body.back().y + body.back().dir.y * (-1);
+    body.push_back(tailEnd);
 }
 
 void Snake::move()

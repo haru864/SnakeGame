@@ -36,6 +36,7 @@ public:
     Snake();
     ~Snake();
     void eat(Feed feed);
+    void grow();
     void move();
     void move(char ch);
     void die();

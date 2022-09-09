@@ -3,41 +3,52 @@
 #include <time.h>
 #include <unistd.h>
 #include <thread>
+#include "feed.h"
 #include "snake.h"
 
 int SCREEN_HEIGHT, SCREEN_WIDTH;
 int EATEN_FEED;
 time_t START_TIME, END_TIME;
-Snake snake;
 
-void waitInput();
-void checkKeyInput();
+void waitInput(Snake *);
+void checkKeyInput(Snake *);
 
 int main(int argc, char *argv[])
 {
     initscr();
     noecho();
+    refresh();
 
     EATEN_FEED = 0;
     getmaxyx(stdscr, SCREEN_HEIGHT, SCREEN_WIDTH);
-    SCREEN_HEIGHT = 10;
-    SCREEN_WIDTH = 10;
+    SCREEN_HEIGHT = 20;
+    SCREEN_WIDTH = 20;
 
-    std::thread waitInputWorker(waitInput);
+    Snake snake;
+    Feed feed;
+
+    std::thread waitInputWorker(waitInput, &snake);
 
     while (true)
     {
+        werase(stdscr);
         for (int y = 0; y < SCREEN_HEIGHT; y++)
         {
             for (int x = 0; x < SCREEN_WIDTH; x++)
             {
                 if ((y == snake.body.front().y) && (x == snake.body.front().x))
                 {
-                    mvprintw(y, x, &snake.currentHead);
+                    char snakeHead = snake.currentHead;
+                    // mvprintw(y, x, &snakeHead);
+                }
+                else if ((y == feed.getCoordinate().y) && (x == feed.getCoordinate().x))
+                {
+                    char feedIcon = feed.getIcon();
+                    mvprintw(y, x, &feedIcon);
                 }
                 else
                 {
-                    mvprintw(y, x, ".");
+                    // mvprintw(y, x, ".");
                 }
             }
         }
@@ -53,16 +64,16 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void waitInput()
+void waitInput(Snake *snake)
 {
     while (true)
     {
-        checkKeyInput();
+        checkKeyInput(snake);
     }
 }
 
-void checkKeyInput()
+void checkKeyInput(Snake *snake)
 {
     int keyInput = getch();
-    snake.move((char)keyInput);
+    snake->move((char)keyInput);
 }

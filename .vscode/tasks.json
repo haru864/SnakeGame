@@ -8,7 +8,7 @@
 			"args": [
 				"*.cpp",
 				"-o",
-				"${workspaceFolder}/bin/${fileBasenameNoExtension}",
+				"${workspaceFolder}/bin/snakegame",
 				"-g",
 				"-Wall",
 				"-lncurses"
