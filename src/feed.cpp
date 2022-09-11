@@ -3,6 +3,7 @@
 #include "snake.h"
 
 extern int SCREEN_HEIGHT, SCREEN_WIDTH;
+extern Snake *snakeAddr;
 
 Feed::Feed()
 {
@@ -22,8 +23,8 @@ void Feed::birth()
 
     do
     {
-        new_x = rnd() % (SCREEN_WIDTH + 1);
-        new_y = rnd() % (SCREEN_HEIGHT + 1);
+        new_x = rnd() % (SCREEN_WIDTH);
+        new_y = rnd() % (SCREEN_HEIGHT);
     } while (!isAvailableCoord(new_x, new_y));
 
     setCoordinate(new_x, new_y);
@@ -57,9 +58,16 @@ bool Feed::isAvailableCoord(int x, int y)
     {
         return false;
     }
-    if ((x > SCREEN_WIDTH) || (x < 0) || (y > SCREEN_HEIGHT) || (y < 0))
+    if ((x >= SCREEN_WIDTH) || (x < 0) || (y >= SCREEN_HEIGHT) || (y < 0))
     {
         return false;
+    }
+    for (int i = 0; i < snakeAddr->body.size(); i++)
+    {
+        if (x == snakeAddr->body.at(i).x && y == snakeAddr->body.at(i).y)
+        {
+            return false;
+        }
     }
     return true;
 }

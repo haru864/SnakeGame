@@ -33,12 +33,13 @@ public:
 public:
     Snake();
     ~Snake();
-    void eat(Feed feed);
+    void eat(Feed &);
     void grow();
     void move();
-    void move(char ch);
+    void move(char);
     void die();
     bool isBorder();
+    bool isOverlap();
 };
 
 #endif

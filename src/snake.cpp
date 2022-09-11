@@ -28,7 +28,7 @@ Snake::~Snake()
 {
 }
 
-void Snake::eat(Feed feed)
+void Snake::eat(Feed &feed)
 {
     feed.birth();
     grow();
@@ -62,7 +62,7 @@ void Snake::move()
         }
     }
 
-    if (isBorder())
+    if (isBorder() || isOverlap())
     {
         die();
     }
@@ -70,6 +70,8 @@ void Snake::move()
 
 void Snake::move(char ch)
 {
+    direction prevDir = body.front().dir;
+
     switch (ch)
     {
     case 'w':
@@ -90,6 +92,15 @@ void Snake::move(char ch)
     default:
         break;
     }
+
+    // if snake has more than one size, crash when turning 180 degrees
+    if (body.size() > 1)
+    {
+        if (body.front().dir.x * (-1) == prevDir.x)
+        {
+            die();
+        }
+    }
 }
 
 void Snake::die()
@@ -107,8 +118,24 @@ void Snake::die()
 bool Snake::isBorder()
 {
     if (body.front().x < 0 || body.front().x > SCREEN_WIDTH)
+    {
         return true;
+    }
     if (body.front().y < 0 || body.front().y > SCREEN_HEIGHT)
+    {
         return true;
+    }
+    return false;
+}
+
+bool Snake::isOverlap()
+{
+    for (int i = 1; i < body.size(); i++)
+    {
+        if (body.front().x == body.at(i).x && body.front().y == body.at(i).y)
+        {
+            return true;
+        }
+    }
     return false;
 }
