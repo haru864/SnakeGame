@@ -36,25 +36,28 @@ int main(int argc, char *argv[])
         {
             for (int x = 0; x < SCREEN_WIDTH; x++)
             {
-                if ((y == snake.body.front().y) && (x == snake.body.front().x))
+                for (int i = 0; i < snake.body.size(); i++)
                 {
-                    char snakeHead = snake.currentHead;
-                    // mvprintw(y, x, &snakeHead);
+                    if ((y == snake.body.at(i).y) && (x == snake.body.at(i).x))
+                    {
+                        char icon = snake.icon[snake.body.at(i).dir];
+                        mvprintw(y, x, &icon);
+                    }
                 }
-                else if ((y == feed.getCoordinate().y) && (x == feed.getCoordinate().x))
+                if ((y == feed.getCoordinate().y) && (x == feed.getCoordinate().x))
                 {
                     char feedIcon = feed.getIcon();
                     mvprintw(y, x, &feedIcon);
                 }
-                else
-                {
-                    // mvprintw(y, x, ".");
-                }
             }
         }
         refresh();
+        if ((snake.body.front().y == feed.getCoordinate().y) && (snake.body.front().x == feed.getCoordinate().x))
+        {
+            snake.eat(feed);
+        }
         snake.move();
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     waitInputWorker.join();

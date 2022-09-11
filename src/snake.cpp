@@ -19,7 +19,6 @@ Snake::Snake()
     icon[DIR_RIGHT] = '>';
     icon[DIR_UP] = '^';
     icon[DIR_DOWN] = 'v';
-    currentHead = icon[DIR_RIGHT];
 
     // set birth time
     START_TIME = time(NULL);
@@ -47,10 +46,20 @@ void Snake::grow()
 
 void Snake::move()
 {
-    for (size_t i = 0; i < body.size(); i++)
+    for (int i = 0; i < body.size(); i++)
     {
-        body.at(i).x += body.at(i).dir.x;
-        body.at(i).y += body.at(i).dir.y;
+        int idx = (body.size() - 1) - i;
+        if (idx == 0)
+        {
+            body.at(idx).x += body.at(idx).dir.x;
+            body.at(idx).y += body.at(idx).dir.y;
+        }
+        else
+        {
+            body.at(idx).x = body.at(idx - 1).x;
+            body.at(idx).y = body.at(idx - 1).y;
+            body.at(idx).dir = body.at(idx - 1).dir;
+        }
     }
 
     if (isBorder())
@@ -64,20 +73,16 @@ void Snake::move(char ch)
     switch (ch)
     {
     case 'w':
-        body.at(0).dir = DIR_UP;
-        currentHead = icon[DIR_UP];
+        body.front().dir = DIR_UP;
         break;
     case 'a':
-        body.at(0).dir = DIR_LEFT;
-        currentHead = icon[DIR_LEFT];
+        body.front().dir = DIR_LEFT;
         break;
     case 's':
-        body.at(0).dir = DIR_DOWN;
-        currentHead = icon[DIR_DOWN];
+        body.front().dir = DIR_DOWN;
         break;
     case 'd':
-        body.at(0).dir = DIR_RIGHT;
-        currentHead = icon[DIR_RIGHT];
+        body.front().dir = DIR_RIGHT;
         break;
     case '\n':
         die();

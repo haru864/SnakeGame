@@ -29,8 +29,6 @@ class Snake
 public:
     std::vector<coordinate> body;
     std::map<direction, char> icon;
-    char currentHead;
-    std::string currentDir;
 
 public:
     Snake();
