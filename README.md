@@ -11,13 +11,13 @@ In snakegame, player operate snake expressed by symbol '<', '>', '^', 'v'.
 
 Symbol expressing snake is fluctuate depending op direction snake move.
 
-'^' snake go up
+'^' snake go up (push 'w')
 
-'v' snake go down
+'v' snake go down (push 's')
 
-'<' snake go left
+'<' snake go left (push 'a')
 
-'>' snake go right
+'>' snake go right (push 'd')
 
 if snake eat feed expressed by '#', then snake grow and become longer.
 
